@@ -1,0 +1,345 @@
+.app {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  overflow: hidden;
+}
+
+/* θαμπή, αργά κινούμενη "μπάλα" φωτός πίσω από την κάρτα - premium touch */
+.app::before {
+  content: '';
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.35), transparent 70%);
+  filter: blur(60px);
+  animation: float-glow 12s var(--ease-premium) infinite;
+  z-index: 0;
+}
+
+.glass-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: card-enter 0.6s var(--ease-premium) both;
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes float-glow {
+  0%, 100% { transform: translate(-40%, -30%); }
+  50% { transform: translate(-55%, -15%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-card,
+  .app::before {
+    animation: none;
+  }
+}
+
+/* --- Password display --- */
+
+.password-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+}
+
+.password-text {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  letter-spacing: 0.5px;
+  word-break: break-all;
+  color: var(--text-primary);
+}
+
+.password-display button {
+  flex-shrink: 0;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  transition: transform 0.25s var(--ease-premium), box-shadow 0.25s var(--ease-premium), opacity 0.25s var(--ease-premium);
+}
+
+.password-display button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(139, 92, 246, 0.4);
+}
+
+.password-display button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* --- Strength meter --- */
+
+.strength-meter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.strength-bar-track {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.strength-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.5s var(--ease-premium), background-color 0.4s var(--ease-premium);
+}
+
+.strength-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-width: 96px;
+  text-align: right;
+}
+
+/* --- Options panel --- */
+
+.options-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.options-panel label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.length-control {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.options-panel input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent-1);
+}
+
+.options-panel input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-1);
+  cursor: pointer;
+}
+
+/* --- Generate button --- */
+
+.generate-button {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.35);
+  transition: transform 0.25s var(--ease-premium), box-shadow 0.25s var(--ease-premium);
+}
+
+/* λωρίδα φωτός που "περνάει" πάνω από το κουμπί στο hover */
+.generate-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s var(--ease-premium);
+}
+
+.generate-button:hover::after {
+  left: 130%;
+}
+
+.generate-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(139, 92, 246, 0.5);
+}
+
+.generate-button:active {
+  transform: translateY(0);
+}
+
+/* --- History panel --- */
+
+.history-panel {
+  border-top: 1px solid var(--glass-border);
+  padding-top: 16px;
+}
+
+.history-panel h3 {
+  margin: 0 0 10px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.history-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+
+  /* minimal premium scrollbar - Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-1) transparent;
+}
+
+/* minimal premium scrollbar - Chrome/Edge/Safari */
+.history-panel ul::-webkit-scrollbar {
+  width: 5px;
+}
+
+.history-panel ul::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.history-panel ul::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--accent-1), var(--accent-2));
+  border-radius: 999px;
+}
+
+.history-panel ul::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-2);
+}
+
+.history-panel li {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  padding: 8px 10px;
+  word-break: break-all;
+}
+
+/* --- Tablet (768px και κάτω) --- */
+@media (max-width: 768px) {
+  .glass-card {
+    max-width: 400px;
+    padding: 28px;
+    gap: 20px;
+  }
+
+  .app::before {
+    width: 360px;
+    height: 360px;
+  }
+}
+
+/* --- Κινητά (480px και κάτω) --- */
+@media (max-width: 480px) {
+  .app {
+    padding: 20px 12px;
+  }
+
+  .glass-card {
+    max-width: 100%;
+    padding: 20px;
+    border-radius: var(--radius-md);
+    gap: 18px;
+  }
+
+  .password-display {
+    flex-wrap: wrap;
+    padding: 14px;
+  }
+
+  .password-text {
+    font-size: 1rem;
+    width: 100%;
+  }
+
+  .password-display button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .strength-label {
+    min-width: auto;
+    font-size: 0.75rem;
+  }
+
+  .generate-button {
+    padding: 13px;
+    font-size: 0.95rem;
+  }
+
+  .app::before {
+    width: 260px;
+    height: 260px;
+  }
+}
+
+/* πολύ μικρά τηλέφωνα (360px και κάτω) */
+@media (max-width: 360px) {
+  .glass-card {
+    padding: 16px;
+  }
+
+  .options-panel label {
+    font-size: 0.82rem;
+  }
+}
