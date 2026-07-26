@@ -18,18 +18,61 @@ const CHAR_SETS = {
 // αν ο χρήστης ενεργοποιήσει το "excludeAmbiguous"
 const AMBIGUOUS_CHARS = 'l1IO0'
 
+// Επιλέγει χαρακτήρες από το charSet με ομοιόμορφη κατανομή. Το απλό
+// `byte % charSet.length` ευνοεί τους πρώτους χαρακτήρες όταν το 256 δεν
+// διαιρείται ακριβώς με το μήκος του set (modulo bias) — εδώ απορρίπτουμε τα
+// bytes που πέφτουν έξω από το τελευταίο πλήρες "παράθυρο" και ξαναρίχνουμε.
+function randomChars(charSet, count) {
+  const limit = Math.floor(256 / charSet.length) * charSet.length
+  const out = []
+  const buffer = new Uint8Array(count)
+  while (out.length < count) {
+    crypto.getRandomValues(buffer)
+    for (const b of buffer) {
+      if (b >= limit) continue
+      out.push(charSet[b % charSet.length])
+      if (out.length === count) break
+    }
+  }
+  return out.join('')
+}
+
+function buildCharSet({ useUpperCase, useLowerCase, useNumbers, useSymbols, excludeAmbiguous }) {
+  let charSet = ''
+  if (useUpperCase) charSet += CHAR_SETS.uppercase
+  if (useLowerCase) charSet += CHAR_SETS.lowercase
+  if (useNumbers) charSet += CHAR_SETS.numbers
+  if (useSymbols) charSet += CHAR_SETS.symbols
+  if (excludeAmbiguous) {
+    charSet = charSet.replace(new RegExp(`[${AMBIGUOUS_CHARS}]`, 'g'), '')
+  }
+  return charSet
+}
+
+// Αρχικές επιλογές — μοιράζονται ανάμεσα στο initial state και στον πρώτο κωδικό,
+// ώστε η οθόνη να μην ξεκινά άδεια χωρίς να χρειάζεται effect στο mount.
+const DEFAULTS = {
+  length: 16,
+  useUpperCase: true,
+  useLowerCase: true,
+  useNumbers: true,
+  useSymbols: true,
+  excludeAmbiguous: false,
+}
+const FIRST_PASSWORD = randomChars(buildCharSet(DEFAULTS), DEFAULTS.length)
+
 function App() {
   // --- state επιλογών: τι θέλει ο χρήστης να περιέχει ο κωδικός ---
-  const [length, setLength] = useState(16)
-  const [useUpperCase, setUseUpperCase] = useState(true)
-  const [useLowerCase, setUseLowerCase] = useState(true)
-  const [useNumbers, setUseNumbers] = useState(true)
-  const [useSymbols, setUseSymbols] = useState(true)
-  const [excludeAmbiguous, setExcludeAmbiguous] = useState(false)
+  const [length, setLength] = useState(DEFAULTS.length)
+  const [useUpperCase, setUseUpperCase] = useState(DEFAULTS.useUpperCase)
+  const [useLowerCase, setUseLowerCase] = useState(DEFAULTS.useLowerCase)
+  const [useNumbers, setUseNumbers] = useState(DEFAULTS.useNumbers)
+  const [useSymbols, setUseSymbols] = useState(DEFAULTS.useSymbols)
+  const [excludeAmbiguous, setExcludeAmbiguous] = useState(DEFAULTS.excludeAmbiguous)
 
   // --- state αποτελέσματος ---
-  const [password, setPassword] = useState('')
-  const [history, setHistory] = useState([]) // τελευταίοι 5 κωδικοί που παράχθηκαν
+  const [password, setPassword] = useState(FIRST_PASSWORD)
+  const [history, setHistory] = useState([FIRST_PASSWORD]) // τελευταίοι 5 κωδικοί
   const [copied, setCopied] = useState(false) // true για ~1.5s μετά από αντιγραφή
 
   // κρατάει το ID του setTimeout ώστε να μπορούμε να το ακυρώσουμε αν ο
@@ -38,52 +81,40 @@ function App() {
 
   const generatePassword = useCallback(() => {
     // 1. σύνθεσε το pool χαρακτήρων από τα ενεργά toggles
-    let charSet = ''
-    if (useUpperCase) charSet += CHAR_SETS.uppercase
-    if (useLowerCase) charSet += CHAR_SETS.lowercase
-    if (useNumbers) charSet += CHAR_SETS.numbers
-    if (useSymbols) charSet += CHAR_SETS.symbols
-
-    // 2. αφαίρεσε τους χαρακτήρες που μοιάζουν, αν το ζήτησε ο χρήστης
-    if (excludeAmbiguous) {
-      charSet = charSet.replace(new RegExp(`[${AMBIGUOUS_CHARS}]`, 'g'), '')
-    }
+    const charSet = buildCharSet({
+      useUpperCase, useLowerCase, useNumbers, useSymbols, excludeAmbiguous,
+    })
 
     // αν ο χρήστης απενεργοποίησε όλα τα toggles, δεν υπάρχει pool -> σταμάτα
     if (!charSet) return
 
-    // 3. crypto.getRandomValues (ΟΧΙ Math.random!) — παράγει κρυπτογραφικά
-    // ασφαλή τυχαία bytes, απαραίτητο για κωδικούς. Το Math.random δεν
-    // είναι σχεδιασμένο για ασφάλεια και μπορεί να προβλεφθεί.
-    const randomValues = new Uint8Array(length)
-    crypto.getRandomValues(randomValues)
+    // 2. crypto.getRandomValues (ΟΧΙ Math.random!) — κρυπτογραφικά ασφαλή bytes,
+    // χωρίς modulo bias (βλ. randomChars)
+    const newPassword = randomChars(charSet, length)
 
-    // κάθε byte (0-255) γίνεται index μέσα στο charSet με modulo
-    const newPassword = Array.from(randomValues, (b) => charSet[b % charSet.length]).join('')
-
-    // 4. αποθήκευσε τον νέο κωδικό και βάλε τον ΠΑΛΙΟ στο ιστορικό
+    // 3. αποθήκευσε τον νέο κωδικό και βάλε τον ΠΑΛΙΟ στο ιστορικό
     setPassword(newPassword)
     setHistory((h) => [newPassword, ...h].slice(0, 5))
   }, [length, useUpperCase, useLowerCase, useNumbers, useSymbols, excludeAmbiguous])
 
   const strength = calculateStrength(password)
 
-  const handleCopy = useCallback(() => {
+  const handleCopy = useCallback(async () => {
+    // το clipboard API απορρίπτει το promise χωρίς HTTPS/permission — το try
+    // γύρω από ένα μη-awaited writeText δεν έπιανε ποτέ αυτή την περίπτωση
     try {
-      navigator.clipboard.writeText(password)
+      await navigator.clipboard.writeText(password)
       setCopied(true)
       if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current)
       copyTimeoutRef.current = setTimeout(() => setCopied(false), 1500)
     } catch (error) {
-      // το clipboard API μπορεί να αποτύχει (π.χ. χωρίς HTTPS/permission)
       console.error('Αποτυχία αντιγραφής στο clipboard:', error)
     }
   }, [password])
 
-  // δημιούργησε έναν κωδικό στο πρώτο mount ώστε η οθόνη να μην είναι άδεια
-  useEffect(() => {
-    generatePassword()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // καθάρισε το pending timeout αν φύγει το component
+  useEffect(() => () => {
+    if (copyTimeoutRef.current) clearTimeout(copyTimeoutRef.current)
   }, [])
 
   return (
