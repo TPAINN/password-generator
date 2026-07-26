@@ -57,12 +57,7 @@
   50% { transform: translate(-55%, -15%); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .glass-card,
-  .app::before {
-    animation: none;
-  }
-}
+
 
 /* --- Password display --- */
 
