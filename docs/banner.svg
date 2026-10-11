@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 360" width="1280" height="360" role="img" aria-label="Password Generator — Cryptographically secure. Zero tracking. Zero backend.">
+<title>Password Generator</title>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#06121a"/><stop offset="1" stop-color="#0c0a1f"/></linearGradient>
+<linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
+<linearGradient id="tt" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#22d3ee"/></linearGradient>
+<radialGradient id="orb"><stop offset="0" stop-color="#22d3ee" stop-opacity=".55"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></radialGradient>
+<radialGradient id="orb2"><stop offset="0" stop-color="#a78bfa" stop-opacity=".45"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient>
+<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#fff" stroke-opacity=".045"/></pattern>
+<clipPath id="clip"><rect width="1280" height="360" rx="22"/></clipPath>
+<style>
+.bar{transform-box:fill-box;transform-origin:center bottom;animation:eq 1.4s ease-in-out infinite}
+@keyframes eq{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
+.pulse{transform-box:fill-box;transform-origin:center;animation:pl 2.6s ease-in-out infinite}
+@keyframes pl{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.3);opacity:1}}
+.ring{transform-box:fill-box;transform-origin:center;animation:rg 4s ease-out infinite}
+@keyframes rg{0%{transform:scale(.75);opacity:.6}100%{transform:scale(1.15);opacity:0}}
+.float{animation:fl 6s ease-in-out infinite}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.glow{filter:drop-shadow(0 0 8px #22d3ee)}
+.blink{animation:bk 1.1s steps(2,start) infinite}
+@keyframes bk{to{opacity:0}}
+.sweep{animation:sw 3.4s ease-in-out infinite}
+@keyframes sw{0%,100%{transform:translateY(0)}50%{transform:translateY(272px)}}
+.cell{animation:ce 3.2s ease-in-out infinite}
+@keyframes ce{0%,100%{opacity:.25}50%{opacity:1}}
+.scramble{animation:sc 3s ease-in-out infinite}
+@keyframes sc{0%,100%{opacity:.15}30%,70%{opacity:1}}
+.seg{transform-box:fill-box;transform-origin:left;animation:sg 3s ease-in-out infinite}
+@keyframes sg{0%,100%{transform:scaleX(.2);opacity:.4}50%{transform:scaleX(1);opacity:1}}
+.flip{transform-box:fill-box;transform-origin:center;animation:fp 5s ease-in-out infinite}
+@keyframes fp{0%,40%,100%{transform:scaleX(1)}50%{transform:scaleX(.05)}60%,90%{transform:scaleX(1)}}
+.ringbell{transform-box:fill-box;transform-origin:50% 8%;animation:rb 2.4s ease-in-out infinite}
+@keyframes rb{0%,100%{transform:rotate(0)}15%{transform:rotate(9deg)}30%{transform:rotate(-9deg)}45%{transform:rotate(5deg)}60%{transform:rotate(0)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</defs>
+<g clip-path="url(#clip)">
+<rect width="1280" height="360" fill="url(#bg)"/>
+<rect width="1280" height="360" fill="url(#grid)"/>
+<circle cx="260" cy="40" r="260" fill="url(#orb)"><animate attributeName="cx" values="260;340;260" dur="14s" repeatCount="indefinite"/></circle>
+<circle cx="1080" cy="340" r="300" fill="url(#orb2)"><animate attributeName="cy" values="340;290;340" dur="11s" repeatCount="indefinite"/></circle>
+<g class="float"><rect x="830" y="140" width="150" height="124" rx="22" fill="url(#g1)"/><path d="M862 140v-26a43 43 0 0 1 86 0v26" fill="none" stroke="url(#g1)" stroke-width="16" stroke-linecap="round"/><circle cx="905" cy="192" r="14" fill="#0b1018"/><rect x="900" y="196" width="10" height="28" rx="5" fill="#0b1018"/></g><text class="scramble" x="1040" y="110" font-family="'JetBrains Mono','SF Mono',Consolas,'Courier New',monospace" font-size="22" font-weight="700" fill="#22d3ee" style="animation-delay:-0.00s">x7#Qm!9</text><text class="scramble" x="1040" y="144" font-family="'JetBrains Mono','SF Mono',Consolas,'Courier New',monospace" font-size="22" font-weight="700" fill="#a78bfa" style="animation-delay:-0.75s">R$2vK@e</text><text class="scramble" x="1040" y="178" font-family="'JetBrains Mono','SF Mono',Consolas,'Courier New',monospace" font-size="22" font-weight="700" fill="#22d3ee" style="animation-delay:-1.50s">p9&amp;Lz4T</text><text class="scramble" x="1040" y="212" font-family="'JetBrains Mono','SF Mono',Consolas,'Courier New',monospace" font-size="22" font-weight="700" fill="#a78bfa" style="animation-delay:-2.25s">Wn!6#cB</text><rect class="seg" x="830" y="296" width="48" height="10" rx="5" fill="#22d3ee" style="animation-delay:0.00s"/><rect class="seg" x="886" y="296" width="48" height="10" rx="5" fill="#22d3ee" style="animation-delay:0.25s"/><rect class="seg" x="942" y="296" width="48" height="10" rx="5" fill="#22d3ee" style="animation-delay:0.50s"/><rect class="seg" x="998" y="296" width="48" height="10" rx="5" fill="#22d3ee" style="animation-delay:0.75s"/><rect class="seg" x="1054" y="296" width="48" height="10" rx="5" fill="#a78bfa" style="animation-delay:1.00s"/>
+<text x="72" y="140" font-family="Inter,'Segoe UI','SF Pro Display','Helvetica Neue',Arial,sans-serif" font-size="63" font-weight="800" letter-spacing="-2" fill="url(#tt)">Password Generator</text>
+<text x="72" y="200" font-family="Inter,'Segoe UI','SF Pro Display','Helvetica Neue',Arial,sans-serif" font-size="22" fill="#fff" fill-opacity=".72">Cryptographically secure. Zero tracking. Zero</text><text x="72" y="232" font-family="Inter,'Segoe UI','SF Pro Display','Helvetica Neue',Arial,sans-serif" font-size="22" fill="#fff" fill-opacity=".72">backend.</text>
+<g transform="translate(72 292)"><rect width="104" height="34" rx="17" fill="#fff" fill-opacity=".06" stroke="#22d3ee" stroke-opacity=".45"/><text x="52" y="22.5" text-anchor="middle" font-family="Inter,'Segoe UI','SF Pro Display','Helvetica Neue',Arial,sans-serif" font-size="14" font-weight="600" fill="#fff" fill-opacity=".85">React 19</text></g><g transform="translate(186 292)"><rect width="67" height="34" rx="17" fill="#fff" fill-opacity=".06" stroke="#22d3ee" stroke-opacity=".45"/><text x="33" y="22.5" text-anchor="middle" font-family="Inter,'Segoe UI','SF Pro Display','Helvetica Neue',Arial,sans-serif" font-size="14" font-weight="600" fill="#fff" fill-opacity=".85">Vite</text></g><g transform="translate(262 292)"><rect width="122" height="34" rx="17" fill="#fff" fill-opacity=".06" stroke="#22d3ee" stroke-opacity=".45"/><text x="61" y="22.5" text-anchor="middle" font-family="Inter,'Segoe UI','SF Pro Display','Helvetica Neue',Arial,sans-serif" font-size="14" font-weight="600" fill="#fff" fill-opacity=".85">Web Crypto</text></g>
+<rect x="1" y="1" width="1278" height="358" rx="21" fill="none" stroke="url(#g1)" stroke-opacity=".35" stroke-width="1.5"/>
+</g>
+</svg>
